@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vue Basic</title>
+</head>
+
+<body>
+  <div id="root">
+    <h1>{{ title }}</h1>
+    <form @submit.prevent="addItem">
+      <input type="text" v-model="newItem">
+      <button type="submit">Add Item</button>  
+    </form>
+    <ul>
+      <li v-for="todo in todos">
+        {{ todo }}
+      </li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    var root = new Vue({
+      el: "#root", // element
+      data: { // variable
+        title: "Todo List",
+        newItem: "",
+        todos: ["Go to shop", "Buy Egg"]
+      },
+      methods: {
+        addItem() { // addItem: function() {
+          //this.todos.push(this.newItem);
+          this.todos = [...this.todos, this.newItem];
+          this.newItem = "";
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

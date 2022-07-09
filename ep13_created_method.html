@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vue Basic</title>
+  <style>
+    ul {
+      list-style-type: none;
+    }
+
+    .done {
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+    <h1>{{ title }} ({{ totalItem }})</h1>
+    <form @submit.prevent="addItem">
+      <input type="text" v-model="newItem">
+      <button type="submit" :disabled="newItem.length === 0">Add Item</button>
+    </form>
+    <ul>
+      <!-- v-bind:class = :class -->
+      <li v-for="(todo, index) in todos">
+        <input type="checkbox" v-model="todo.completed">
+        <span :class="{ 'done' : todo.completed }">{{ todo.title }}</span>
+        <button @click="deleteItem(index)" v-if="todo.completed ">Delete</button>
+        <!--<button v-else="todo.completed ">Undo</button>-->
+      </li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    var root = new Vue({
+      el: "#root", // element
+      data: { // variable
+        title: "Todo List",
+        newItem: "",
+        todos: []
+      },
+      methods: {
+        getItem() {
+          let me = this;
+          fetch("https://jsonplaceholder.typicode.com/todos?_limit=3")
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(json) {
+            me.todos = json
+          })
+        },
+        addItem() {
+          let item = {
+            title: this.newItem,
+            completed: false
+          }
+          this.todos = [...this.todos, item];
+          this.newItem = "";
+        },
+        deleteItem(index) {
+          this.todos.splice(index, 1);
+        }
+      },
+      computed: {
+        totalItem() {
+          let total = this.todos.filter(function
+            (todo) {
+            return todo.completed === false
+          });
+          return total.length
+        }
+      },
+      created() { // call sayr ma lo buu
+        this.getItem()
+      }
+    });
+  </script>
+</body>
+
+</html>
